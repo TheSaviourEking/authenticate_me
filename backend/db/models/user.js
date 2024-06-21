@@ -50,9 +50,11 @@ module.exports = (sequelize, DataTypes) => {
   User.associate = function (models) {
     // associations can be defined here
   };
+
   User.getCurrentUserById = async function (id) {
     return await User.scope('currentUser').findByPk(id);
   }
+
   User.login = async function ({ credential, password }) {
     const { Op } = require('sequelize');
     const user = await User.scope('loginUser').findOne({
@@ -68,18 +70,22 @@ module.exports = (sequelize, DataTypes) => {
       return await User.scope('currentUser').findByPk(user.id);
     }
   }
+
   User.signup = async function ({ username, email, password }) {
     const hashedPassword = bcrypt.hashSync(password);
     const user = await User.create({ username, email, hashedPassword });
     return await User.scope('currentUser').findByPk(user.id);
   }
+
   User.prototype.toSafeObject = function () { // remember, this cannot be an arrow function
     const { id, username, email } = this; // context will be the User instance
     return { id, username, email };
   };
+
   User.prototype.validatePassword = function (password) {
     return bcrypt.compareSync(password, this.hashedPassword.toString());
     // return bcrypt.compareSync(password, this.hashedPassword.toString('utf8')); // proper string conversion
   }
+  
   return User;
 };
