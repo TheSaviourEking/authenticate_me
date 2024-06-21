@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "sequelize": "sequelize",
+    "sequelize-cli": "sequelize-cli",
     "start": "per-env",
+    "start:development": "nodemon -r dotenv/config ./bin/www",
+    "start:production": "node ./bin/www",
+
     "db:create": "dotenv sequelize-cli db:create",
     "db:migrate": "dotenv sequelize-cli db:migrate",
     "db:seed:all": "dotenv sequelize-cli db:seed:all",
-    "start:development": "dotenv nodemon ./bin/www",
-    "start:production": "dotenv ./bin/www",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
