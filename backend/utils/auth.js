@@ -29,14 +29,14 @@ const restoreUser = (req, res, next) => {
     // token parsed from cookies
     const { token } = req.cookies;
 
-    return jwt.verify(token, secret, null, async (err, jstPayload) => {
+    return jwt.verify(token, secret, null, async (err, jwtPayload) => {
         if (err) {
             return next();
         }
 
         try {
-            const { id } = jstPayload.data;
-            req.user = await User.scope('currentUser').findBYPk(id);
+            const { id } = jwtPayload.data;
+            req.user = await User.scope('currentUser').findByPk(id);
         } catch (e) {
             res.clearCookie('token');
             return next();
@@ -52,7 +52,7 @@ const restoreUser = (req, res, next) => {
 const requireAuth = [
     restoreUser,
     function (req, _res, next) {
-        if (!req.user) return next();
+        if (req.user) return next();
 
         const err = new Error('Unauthorized');
         err.title = 'Unauthorized';
