@@ -1,0 +1,10 @@
+{
+    "environments": {
+        "production": {
+            "build": {
+                "command": "npm run build",
+                "directory": "frontend/build"
+            }
+        }
+    }
+}
